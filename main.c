@@ -47,7 +47,7 @@ char *gnl(int fd)
 	}
 }
 
-int main()
+/* int main()
 {
 	int fd = open("main.c", O_RDWR);
 	char *line = NULL;
@@ -58,4 +58,4 @@ int main()
 		free(line);
 	}
 	return 0;
-}
+} */
