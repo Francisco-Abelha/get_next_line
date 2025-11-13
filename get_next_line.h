@@ -6,7 +6,7 @@
 /*   By: fgoncal2 <fgoncal2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:29:27 by fgoncal2          #+#    #+#             */
-/*   Updated: 2025/11/12 21:26:35 by fgoncal2         ###   ########.fr       */
+/*   Updated: 2025/11/13 20:41:16 by fgoncal2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,8 @@ char	*get_next_line(int fd);
 
 //utils
 size_t	ft_strlen(const char *s);
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strjoin(char const *s1, char const *s2);
-void	*ft_calloc(size_t nmemb, size_t size);
-void	ft_bzero(void *s, size_t n);
+void	*ft_memmove(void *dest, const void *src, size_t len);
+char	*gnl_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strdup(const char *s);
 
 #endif

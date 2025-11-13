@@ -6,7 +6,7 @@
 /*   By: fgoncal2 <fgoncal2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:29:07 by fgoncal2          #+#    #+#             */
-/*   Updated: 2025/11/12 22:20:19 by fgoncal2         ###   ########.fr       */
+/*   Updated: 2025/11/13 21:44:40 by fgoncal2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,28 @@
 
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE + 1];
+	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
+	size_t		read_size;
 	char		*newline_pos;
-	ssize_t		n;
 
 	line = NULL;
-	newline_pos = NULL;
-	if (buf[0])
+	if (buffer[0])
 	{
-		line = ft_strjoin(line, buf);
-		if (ft_strchr(line, '\n'))
-			return (line);
+		line = gnl_strjoin(line, buffer);
+		*buffer = '\0';
 	}
-	while (1)
+	read_size = read(fd, buffer, BUFFER_SIZE);
+	line = gnl_strjoin(line, buffer);
+	buffer[read_size] = '\0';
+	newline_pos = ft_strchr(line, '\n');
+	if (newline_pos)
 	{
-		buf[n] = '\0';
-		newline_pos = ft_strchr(buf, '\n');
-		if (newline_pos)
-		{
-			*(newline_pos + 1) = '\0';
-			line = ft_strjoin(line, buf);
-			ft_strlcpy(buf, newline_pos + 1, BUFFER_SIZE + 1);
-			return (line);
-		}
-		line = ft_strjoin(line, buf);
-		buf[0] = '0';
-		n = read(fd, buf, BUFFER_SIZE);
-		if (n <= 0)
-			break ;
-		buf[n] = '\0';
+		printf("this is the buffer : %s\n", buffer);
+		*(newline_pos + 1) = '\0';
+		printf("this is the buffer : %s\n", buffer);
+		return (line);
 	}
-	if (line && line[0] != '\0')
-		return line;
-	free (line);
 	return (NULL);
 }
 
@@ -55,10 +43,9 @@ int main()
 {
 	int fd = open("file.txt", O_RDWR);
 	char *line = NULL;
-	while ((line = get_next_line(fd)))
-	{
-		printf("%s", line);
-		free(line);
-	}
+	line = get_next_line(fd);
+	printf("line returned : %s", line);
+	line = get_next_line(fd);
+	printf("line returned : %s", line);
 	return 0;
 }
