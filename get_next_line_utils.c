@@ -6,7 +6,7 @@
 /*   By: fgoncal2 <fgoncal2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:36:40 by fgoncal2          #+#    #+#             */
-/*   Updated: 2025/11/13 21:49:42 by fgoncal2         ###   ########.fr       */
+/*   Updated: 2025/11/14 20:28:01 by fgoncal2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,26 @@ size_t	ft_strlen(const char *s)
 char	*gnl_strjoin(char *s1, char *s2)
 {
 	char	*ret;
-	int		len1;
-	int		len2;
+	int		len1 = 0;
+	int		len2 = 0;
 
-	ret = NULL;
-	if (!s1)
-		return (s2);
-	if (!s2)
-		return (s1);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
+	if (s1)
+		len1 = ft_strlen(s1);
+	if (s2)
+		len2 = ft_strlen(s2);
 	ret = malloc(len1 + len2 + 1);
 	if (!ret)
 		return (NULL);
-	ft_memmove(ret, s1, len1);
-	ft_memmove(ret + len1, s2, len2 + 1);
+	if (s1)
+		ft_memmove(ret, s1, len1);
+	if (s2)
+		ft_memmove(ret + len1, s2, len2);
+	ret[len1 + len2] = '\0';
+	s2[0] = 0;
 	free(s1);
 	return (ret);
 }
+
 
 char	*ft_strchr(const char *s, int c)
 {

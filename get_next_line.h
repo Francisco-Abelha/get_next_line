@@ -6,7 +6,7 @@
 /*   By: fgoncal2 <fgoncal2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:29:27 by fgoncal2          #+#    #+#             */
-/*   Updated: 2025/11/13 20:41:16 by fgoncal2         ###   ########.fr       */
+/*   Updated: 2025/11/14 20:31:07 by fgoncal2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 10
+# define BUFFER_SIZE 100
 #endif
 
 # include <stdlib.h>
