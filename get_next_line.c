@@ -6,7 +6,7 @@
 /*   By: fgoncal2 <fgoncal2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:29:07 by fgoncal2          #+#    #+#             */
-/*   Updated: 2025/11/14 20:44:54 by fgoncal2         ###   ########.fr       */
+/*   Updated: 2025/11/18 20:03:47 by fgoncal2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,50 +17,31 @@ char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
-	size_t		read_size;
-	char		*newline_pos;
-	size_t		len;
+	ssize_t		read_bytes;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	line = NULL;
 	if (buffer[0])
 	{
-		newline_pos = ft_strchr(buffer, '\n');
-		if (newline_pos)
-		{
-			len = newline_pos;
-			return (line);
-		}
-		else
-		{
-			line = gnl_strjoin(line, buffer);
-			buffer[0] = 0;
-		}
-			*(newline_pos + 1) = '\0';
+		line = join_move(line, buffer);
+		if (ft_strchr(line, '\n'))
 			return (line);
 	}
-	while (1)
+	while (!ft_strchr(line, '\n'))
 	{
-		read_size = read(fd, buffer, BUFFER_SIZE);
-		line = gnl_strjoin(line, buffer);
-		if (read_size < 1)
-		{
-			buffer[0] = 0;
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (read_bytes < 0)
+			return (free(line), NULL);
+		if (read_bytes == 0)
 			return (line);
-		}
-		if (read_size < BUFFER_SIZE)
-			buffer[read_size] = 0;
-		newline_pos = ft_strchr(line, '\n');
-		if (newline_pos)
-		{
-			*(newline_pos + 1) = '\0';
-			ft_memmove(&buffer[0], &buffer[ft_strlen(line)], BUFFER_SIZE - ft_strlen(line));
-			return (line);
-		}
+		buffer[read_bytes] = 0;
+		line = join_move(line, buffer);
 	}
-	return (NULL);
+	return (line);
 }
 
-int main()
+/* int main()
 {
 	int fd = open("file.txt", O_RDWR);
 	char *line = NULL;
@@ -70,4 +51,4 @@ int main()
 		free(line);
 	}
 	return 0;
-}
+} */

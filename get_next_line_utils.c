@@ -6,21 +6,23 @@
 /*   By: fgoncal2 <fgoncal2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:36:40 by fgoncal2          #+#    #+#             */
-/*   Updated: 2025/11/14 20:28:01 by fgoncal2         ###   ########.fr       */
+/*   Updated: 2025/11/18 20:04:03 by fgoncal2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 
+	if (!str)
+		return (0);
 	i = 0;
-	while (*s != '\0')
+	while (str[i])
 	{
-		i ++;
-		s++;
+		if (str[i++] == '\n')
+			break ;
 	}
 	return (i);
 }
@@ -28,29 +30,36 @@ size_t	ft_strlen(const char *s)
 char	*gnl_strjoin(char *s1, char *s2)
 {
 	char	*ret;
-	int		len1 = 0;
-	int		len2 = 0;
+	char	*start;
+	char	*temp;
 
-	if (s1)
-		len1 = ft_strlen(s1);
-	if (s2)
-		len2 = ft_strlen(s2);
-	ret = malloc(len1 + len2 + 1);
+	ret = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!ret)
-		return (NULL);
-	if (s1)
-		ft_memmove(ret, s1, len1);
-	if (s2)
-		ft_memmove(ret + len1, s2, len2);
-	ret[len1 + len2] = '\0';
-	s2[0] = 0;
+		return (free(s1), NULL);
+	start = ret;
+	temp = s1;
+	while (temp && *temp)
+		*ret++ = *temp++;
+	temp = s2;
+	while (*temp)
+	{
+		*ret++ = *temp;
+		if (*temp == '\n')
+		{
+			temp++;
+			break ;
+		}
+		temp++;
+	}
+	*ret = '\0';
 	free(s1);
-	return (ret);
+	return (start);
 }
-
 
 char	*ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return (NULL);
 	while (*s)
 	{
 		if (*s == (char)c)
@@ -62,26 +71,25 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-void	*ft_memmove(void *dest, const void *src, size_t len)
+void	move_buffer(char *buffer)
 {
 	size_t	i;
+	size_t	j;
 
 	i = 0;
-	if (dest > src)
-	{
-		while (len > 0)
-		{
-			((char *)dest)[len - 1] = ((char *)src)[len - 1];
-			len--;
-		}
-	}
-	else
-	{
-		while (i < len)
-		{
-			((char *)dest)[i] = ((char *)src)[i];
-			i++;
-		}
-	}
-	return (dest);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\n')
+		i++;
+	j = 0;
+	while (buffer[i])
+		buffer[j++] = buffer[i++];
+	buffer[j] = '\0';
+}
+
+char	*join_move(char *line, char *buffer)
+{
+	line = gnl_strjoin(line, buffer);
+	move_buffer(buffer);
+	return (line);
 }
